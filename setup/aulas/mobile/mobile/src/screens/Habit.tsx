@@ -13,7 +13,8 @@ export function Habit(){
 
   const {date} = route.params as Params;
   const parsedDate = dayjs(date);
-  const dayOfWeek = parsedDate.format('dddd')
+  const dayOfWeek = parsedDate.format('dddd');
+  const dayAndMonth = parsedDate.format('DD/MM')
 
   
   return(
@@ -23,8 +24,11 @@ export function Habit(){
            contentContainerStyle={{paddingBottom:100}}
     />
     <BackButton/>
-    <Text>
-      Dia da semana 
+    <Text className="mt-6 text-zinc-400 font-semibold text-base lowercase">
+      {dayOfWeek}
+    </Text>
+    <Text className="text-white font-extrabold text-3xl">
+      {dayAndMonth}
     </Text>
 
     </View>
