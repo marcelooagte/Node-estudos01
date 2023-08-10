@@ -32,7 +32,7 @@ export function New(){
         </Text>
 
         <TextInput
-        className="h-12 pl-4 rounded-lg mt-3 bg-zinc-800 text-white focus:border-2 focus:border-green-500"        
+        className="h-12 pl-4 rounded-lg mt-3 bg-zinc-800 text-white border-2 border-zinc-400 focus:border-green-500"        
         />
         <Text className="text-white font-semibold mt-4 mb-3 text-base">          
           Qual a recorrência? 
@@ -40,8 +40,12 @@ export function New(){
       {
         availableWeekDays.map((weekDay, index)=>( 
         <Checkbox 
-        key={weekDay}
-        title={weekDay} />
+              key={weekDay}
+              title={weekDay} 
+              checked={weekDays.includes(index)}
+              onPress={()=> handleToggleWeekDay(index)}
+        />
+        
         ))
       }
      
