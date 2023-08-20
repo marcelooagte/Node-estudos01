@@ -16,21 +16,24 @@ export function Home(){
   const [summary, setSummary] = useState(null);
   const {navigate} = useNavigation();
 
-  async function fetchData(){
+  async function fetchData(){    
     try{
-      setLoading(true)
-      const response = await api.get('/summary')
-      console.log(response.data)
-      setSummary(response.data)
       
+      setLoading(true)
+      const response = await api.get('summary')     
+      console.log('Verificando: ',response.data)
+      setSummary(response.data); 
+      
+
     }
     catch(error){
-      Alert.alert('Ops','Não foi possível carregar o sumário de hábitos')
-      console.log(error)
-    }
+      Alert.alert('Ops','Não foi possível carregar o sumário de hábitos')      
+      console.log(error);
+    }    
     finally{
       setLoading(false)
     }
+    
   }
 
    useEffect(()=>{
