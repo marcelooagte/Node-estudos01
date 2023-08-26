@@ -1,37 +1,39 @@
 import { TouchableOpacity, View, Text, TouchableOpacityProps} from 'react-native';
-import { Feather } from '@expo/vector-icons'
-//abaixo importado por padrão 
-//import { Colors } from 'react-native/Libraries/NewAppScreen';
-import colors from 'tailwindcss/colors';
+import { Feather} from '@expo/vector-icons';
+
+//importação padrão = import { Colors } from 'react-native/Libraries/NewAppScreen';
+import Colors from 'tailwindcss/colors'
 
 interface Props extends TouchableOpacityProps{
-    checked?: boolean;
-    title: string; 
+    title: string;
+    checked?: boolean; 
 }
 
-export function Checkbox({title, checked = false, ...rest}: Props){
+export function Checkbox({ title, checked= false, ...rest }: Props){
     return(
         <TouchableOpacity
         activeOpacity={0.7}
         className=" flex-row mb-2 items-center "
         {...rest}
         >
-            {
-                checked
-                ?
+                { 
+                    checked
+                    ?  
                     <View className='h-8 w-8 bg-green-500 rounded-lg items-center justify-center'>
-                    <Feather
-                    name="check"
-                    size={20}
-                    color={colors.white}
-                    />
+                        <Feather
+                        name="check"
+                        size={20}
+                        color={Colors.black}
+                        />
                     </View>
-                :
-                <View className='h-8 w-8 bg-zinc-900 rounded-lg' />
-            }
-        <Text className='text-white text-base ml-3 font-semibold'>
-            {title}
-        </Text>
+                    :
+                    <View
+                    className='h-8 w-8 bg-zinc-900 rounded-lg'
+                    />
+                }
+                <Text className='text-white text-base ml-3'>
+                    {title}
+                </Text>
         </TouchableOpacity>
     );
 
