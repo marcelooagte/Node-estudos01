@@ -30,7 +30,7 @@ export function New(){
     {
       if(!title.trim() || weekDays.length === 0 )
       {
-        Alert.alert('Nova hábito', 'Informe o nome do hábito e escolha a periodicidade');
+        return (Alert.alert('Nova hábito', 'Informe o nome do hábito e escolha a periodicidade'));
       }
       
       await api.post('/habits',{title, weekDays})  

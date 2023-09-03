@@ -16,7 +16,7 @@ app.register(appRoutes)
 app.listen({
   port: 3333,
   //fixar host para testes no mobile 
-  //host: '192.168.0.169',
+  host: '192.168.0.169',
 }).then(() => {
   console.log('HTTP Server running')
 })
