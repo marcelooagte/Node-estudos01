@@ -8,7 +8,10 @@ import { Checkbox } from "../components/Checkbox";
 import { Alert } from "react-native";
 import { Loading } from "../components/loading";
 import { api } from "../lib/axios";
-
+import {generateProgressPercentage} from "../utils/generate-progress-percentage"
+import { HabitsEmpty} from "../components/HabitsEmpty"
+import clsx from "clsx";
+ 
 
 
 
@@ -27,12 +30,18 @@ export function Habit(){
   const [loading,setLoading] = useState(true);
   const [dayInfo, setDayInfo] = useState<dayInfoProps | null>(null);
   const [completedHabits, setCompletedHabits] = useState<string[]>([]);
+
   const route = useRoute(); 
   const {date} = route.params as Params;
  
   const parsedDate = dayjs(date);  
+  const isDateInPast = parsedDate.endOf('day').isBefore(new Date())
   const dayOfWeek = parsedDate.format('dddd');
   const dayAndMonth = parsedDate.format('DD/MM');
+
+  const habitsProgress = dayInfo?.possibleHabits?.length && completedHabits
+  ? generateProgressPercentage(dayInfo?.possibleHabits?.length, completedHabits.length) 
+  : 0
 
   async function fetchHabits() {
     try{
@@ -50,16 +59,37 @@ export function Habit(){
       setLoading(false);
     }
   }
-
   async function handleToggleHabit(habitId: string) {
+    if (completedHabits) {
+      try
+      {        
+          await api.patch(`/habits/${habitId}/toggle`);
+          if (completedHabits.includes(habitId)) {
+            setCompletedHabits((prevState) => prevState.filter((habit) => habit !== habitId));
+          } else {
+            setCompletedHabits((prevState) => [...prevState, habitId]);
+          }
+      }
+      catch(error){
+        console.log(error);
+        Alert.alert('Ops','  Não foi possível atualizar o status do hábito')
+      }
+    } else {
+      // Se completedHabits for undefined, defina-o como um array vazio
+      setCompletedHabits([habitId]);
+    }
+  }
+
+ /* async function handleToggleHabit(habitId: string) {
     if(completedHabits.includes(habitId)){
       setCompletedHabits(prevState => prevState.filter(habit => habit !== habitId ));
     }
     else{
-      setCompletedHabits(prevState => [...completedHabits, habitId]);
+      setCompletedHabits(prevState => [...prevState, habitId]);
     }
   }
-    useEffect(()=>{
+  */ 
+  useEffect(()=>{
       fetchHabits();
     },[]);
 
@@ -85,21 +115,33 @@ export function Habit(){
         <Text className="text-white font-extrabold text-3xl">
               {dayAndMonth}
         </Text>
-        <ProgressBar progress={100}/>
-        <View className="mt-6">
+        <ProgressBar progress={habitsProgress}/>
+        <View className={clsx("mt-6",{
+            ["opacity-50"]: isDateInPast
+            })}
+        >
         
        { 
-            dayInfo?.possibleHabits &&
+            dayInfo?.possibleHabits 
+            ?
             dayInfo?.possibleHabits.map(habits =>(                
                 <Checkbox 
                 key={habits.id}
                 title={habits.title}
                 checked={completedHabits?.includes(habits.id)}
+                disabled={isDateInPast}
                 onPress={()=>{handleToggleHabit(habits.id)}}
                 />   
             ) )
+            :
+            <HabitsEmpty/>
        }
        </View>
+       {
+        isDateInPast && <Text className="text-white mt-10 text-center">
+          Você não pode editar uma data no passado.
+        </Text>
+       }
    </ScrollView>
     </View>
   )
