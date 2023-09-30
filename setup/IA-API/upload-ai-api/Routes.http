@@ -23,3 +23,22 @@ Content-Type: application/json
 }
 
 
+###
+# @name create-Testetranscription
+POST http://localhost:3333/videos/8fd3a7f4-717c-4820-ace4-81091417ea19/transcription
+Content-Type: application/json
+
+{
+  "prompt": "clean architecture, ddd"
+}
+
+###
+# @name generate-ia-Completion
+POST http://localhost:3333/ai/complete
+Content-Type: application/json
+
+{
+  "videoId": "8fd3a7f4-717c-4820-ace4-81091417ea19",
+  "temperature": 0.5,
+  "template":"Gere um resumo suncinto da transcrição do vídeo informada a seguir: '''{transcription}''' "  
+}
