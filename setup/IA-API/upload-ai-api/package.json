@@ -9,6 +9,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "prisma":{
+    "seed":"tsx prisma/seed.ts"
+  },
   "devDependencies": {
     "@types/node": "^20.6.3",
     "dotenv": "^16.3.1",
@@ -21,6 +24,7 @@
     "@fastify/multipart": "^7.7.3",
     "@google-cloud/translate": "^8.0.2",
     "@prisma/client": "5.3.1",
+    "ai": "^2.2.15",
     "fastify": "^4.23.2",
     "openai": "^4.10.0",
     "zod": "^3.22.2"
